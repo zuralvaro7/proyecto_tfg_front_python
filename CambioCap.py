@@ -42,7 +42,8 @@ ruta = ""
 contador = 0
 archivo_anterior = ""
 esperando_nuevo_archivo = False
-
+# api = "localhost:8080"
+api = "poryectotfgapi-production.up.railway.app"
 
 
 def seleccionar_carpeta():
@@ -191,7 +192,7 @@ def getConfiguracion():
         return None
 
 def subir_historial(datos, contador, dia, hora):
-    conn = http.client.HTTPConnection("localhost:8080")
+    conn = http.client.HTTPSConnection(api)
     config = getConfiguracion()
     id_usuario = config["id_usuario"]
     diaHoy = f"{dia[2]}/{dia[1]}/{dia[0]}"
@@ -216,7 +217,7 @@ def subir_historial(datos, contador, dia, hora):
 #     mpchc = os.system("tasklist | findstr mpc-hc64.exe")
 #     reproWindows = os.system("tasklist | findstr Microsoft.Media.Player.ex")
 #     vlc = os.system("tasklist | findstr vlc.exe")
-    
+
 
 
 
@@ -227,7 +228,7 @@ pp = 0
 def comprobar_estado():
     global estado_anterior, contador, archivo_anterior, esperando_nuevo_archivo, pp
     datos = None
-    
+
     if pruebas and pp==0:
         pp=1
         print("Modo pruebas activado, no se ejecutará la comprobación real.")
@@ -240,9 +241,9 @@ def comprobar_estado():
     mpchc = os.system("tasklist | findstr mpc-hc64.exe >nul 2>&1")
     # reproWindows = os.system("tasklist | findstr Microsoft.Media.Player.ex >nul 2>&1")
     # vlc = os.system("tasklist | findstr vlc.exe >nul 2>&1")
-    
+
     # print (f"Comprobando estado del reproductor: mpc-hc={mpchc}, reproWindows={reproWindows}, vlc={vlc}")
-    
+
     if (mpchc==0):
         try:
             datos = urllib.request.urlopen(url="http://127.0.0.1:13579/status.html").read()
@@ -254,7 +255,7 @@ def comprobar_estado():
         campos = re.findall('"(.*?)"', datos)
         archivo_actual = campos[0]
         estado_actual = campos[1]
-        
+
 
         if archivo_actual != archivo_anterior:
             print("Nuevo archivo detectado:", archivo_actual)
@@ -264,8 +265,8 @@ def comprobar_estado():
         tiempoActual=tiempoAsegundo(campos[2])
         tiempoFinal=tiempoAsegundo(campos[3])
 
-        # Tengo un error que cambia el estado y no se esta reproduciendo cambia el nombre y modifica el progreso 
-        #           y cuando se reproduce algo cambia también al final del video 
+        # Tengo un error que cambia el estado y no se esta reproduciendo cambia el nombre y modifica el progreso
+        #           y cuando se reproduce algo cambia también al final del video
         if estado_actual != estado_anterior:
             print("Cambio de estado:", estado_anterior, "->", estado_actual)
             pintarEstado(estado_actual)
@@ -273,8 +274,8 @@ def comprobar_estado():
         if estado_actual == "Stopped" or estado_actual == "N/A" or estado_actual == "Detenido" and estado_actual != estado_anterior:
             print("Reproductor detenido, esperando nuevo archivo...")
             esperando_nuevo_archivo = True
-            
-        try:   
+
+        try:
             totalPor=porcentajeRestante(tiempoActual,tiempoFinal)
         except Exception as e:
             print(f"Error al calcular porcentaje: {e}")
@@ -287,7 +288,7 @@ def comprobar_estado():
             actualizar_label_contador()
             guardar_historial(campos)
             esperando_nuevo_archivo = True
-        
+
         estado_anterior = estado_actual
         archivo_anterior = archivo_actual
     root.after(2000, comprobar_estado)
@@ -314,7 +315,7 @@ def pantalla_incio():
 
 
     boton = tk.Button(root, text="Iniciar", command=lambda :(
-        conn := http.client.HTTPConnection("localhost:8080"),
+        conn := http.client.HTTPSConnection(api),
         payload := "{\n  \"nombre_usuario\": \"" + nombre.get("1.0", "end-1c") + "\",\n  \"contrasena\": \"" +
                    password.get("1.0", "end-1c") + "\",\n  \"esLogin\": true\n}",
         headers := {'content-type': "application/json"},
