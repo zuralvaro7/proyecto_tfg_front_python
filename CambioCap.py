@@ -295,7 +295,7 @@ def comprobar_estado():
 
 
 # Interfaz
-root = tk.Tk(className="Nombre aplicación")
+root = tk.Tk(className="proyecto tfg")
 
 btn_cerrar=None
 boton =None
@@ -307,7 +307,7 @@ nombre= None
 password = None
 
 def pantalla_incio():
-    global boton, nombre, password, btn_cerrar
+    global boton, nombre, password, btn_cerrar_sesion
     nombre = tk.Text(root, height=5, width=50)
     password = tk.Text(root, height=5, width=50)
     nombre.pack()
@@ -355,7 +355,7 @@ def pantalla2():
         nombre.destroy()
         password.destroy()
         boton.destroy()
-    btn_cerrar = tk.Button(root, text="Cerrar", command=cerra_sesion)
+    btn_cerrar_sesion= tk.Button(root, text="Cerrar Sesion", command=cerra_sesion)
     boton = tk.Button(root, text="Seleccionar Carpeta", command=seleccionar_carpeta)
     label = tk.Label(root, text="No hay carpeta seleccionada', selecciona una'")
     label_contador = tk.Label(root, text=f"Episodios vistos: {contador}")
