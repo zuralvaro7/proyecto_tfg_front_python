@@ -363,7 +363,7 @@ def pantalla2():
     label_estado = tk.Label(root, text="Estado: N/A")
 
 
-    btn_cerrar.pack()
+    btn_cerrar_sesion.pack()
     label.pack()
     boton.pack()
     label_contador.pack()
