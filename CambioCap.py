@@ -297,7 +297,7 @@ def comprobar_estado():
 # Interfaz
 root = tk.Tk(className="proyecto tfg")
 
-btn_cerrar=None
+btn_cerrar_sesion=None
 boton =None
 label=None
 label_contador=None
@@ -350,7 +350,7 @@ def anadirUsuario(data):
         conf.close()
 
 def pantalla2():
-    global boton, label, label_contador, label_estado1, label_estado, nombre, password,btn_cerrar
+    global boton, label, label_contador, label_estado1, label_estado, nombre, password,btn_cerrar_sesion
     if(boton):
         nombre.destroy()
         password.destroy()
@@ -372,13 +372,13 @@ def pantalla2():
     comprobar_estado()
 
 def cerra_sesion():
-    global boton, label, label_contador, label_estado1, label_estado, btn_cerrar
+    global boton, label, label_contador, label_estado1, label_estado, btn_cerrar_sesion
     boton.destroy()
     label.destroy()
     label_contador.destroy()
     label_estado1.destroy()
     label_estado.destroy()
-    btn_cerrar.destroy()
+    btn_cerrar_sesion.destroy()
     conf = open("./conf/conf.json", 'w')
     conf.write("")
     conf.close()
